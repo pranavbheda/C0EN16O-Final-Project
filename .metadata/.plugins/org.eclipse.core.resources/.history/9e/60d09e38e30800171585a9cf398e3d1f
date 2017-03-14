@@ -1,0 +1,37 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+public class Display extends JFrame implements ActionListener {
+
+	public Display(String titleText) {
+		super(titleText);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+
+		// full screen
+    	jframe.setLayout(new GridLayout(2,2,100,10));
+		setLocationRelativeTo(null);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+    	setUndecorated(true);
+		setVisible(true);
+
+   
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

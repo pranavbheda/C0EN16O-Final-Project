@@ -1,0 +1,36 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+public class Display extends JFrame implements ActionListener {
+
+	public Display(String titleText) {
+		super(titleText);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		getContentPane().add(dp, BorderLayout.CENTER);
+
+		// center to the screen with width of 700 px, height of 350 px
+		setLocationRelativeTo(null);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+    	setUndecorated(true);
+		setVisible(true);
+
+   
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
