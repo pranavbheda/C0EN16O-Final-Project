@@ -13,7 +13,7 @@ import javax.swing.*;
  *
  *
  *
- * @author Pranav, Gurneev
+ * @author Pranav
  *
  */
 @SuppressWarnings("serial")
@@ -26,12 +26,13 @@ public class RMOS extends JPanel implements ActionListener{
     /* GUI Variables ----------------------------- */
     
     JLabel userLabel, passLabel, rcmID;
+    
     JButton rcm1Total, rcm2Total;
     
     // panel to show recycle type
     JPanel changePanel;
     JLabel cp_type, cp_priceLabel, cp_newPriceLabel;
-    JTextField cp_currPrice, cp_newPrice, tWeight, tMoney;
+    JTextField cp_currPrice, cp_newPrice;
     JButton cp_add, cp_remove, goButton;
 	final JComboBox<String> cb = new JComboBox<String>(recyItems);
     
@@ -138,16 +139,12 @@ public class RMOS extends JPanel implements ActionListener{
 		
 		if(e.getSource() == rcm1Total){
 			rcmID.setText("RCM 1");
-			tWeight.setText(MyUtil.formatDouble(stations.get(0).getTotalWeight()));
-			tMoney.setText(MyUtil.formatDouble(stations.get(0).getTotalMoney()));
 			updateStats();
 			changePanel.revalidate();
 		}
 		
 		if(e.getSource() == rcm2Total){
 			rcmID.setText("RCM 2");
-			tWeight.setText(MyUtil.formatDouble(stations.get(1).getTotalWeight()));
-			tMoney.setText(MyUtil.formatDouble(stations.get(1).getTotalMoney()));
 			updateStats();
 			changePanel.revalidate();
 		}
@@ -162,15 +159,15 @@ public class RMOS extends JPanel implements ActionListener{
     	super.revalidate();
     	
     	JPanel totalPanel = new JPanel();
-    	totalPanel.setLayout(new GridLayout(3,0));
+    	totalPanel.setLayout(new FlowLayout());
     	
     	JPanel tp_labels = new JPanel();
     	rcmID = new JLabel("RCM 1");
     	JLabel totalWeight = new JLabel("Total Weight: ", JLabel.LEFT);
-    	tWeight = new JTextField(MyUtil.formatDouble(stations.get(0).getTotalWeight()));
+    	JTextField tWeight = new JTextField(MyUtil.formatDouble(stations.get(1).getTotalWeight()));
     	tWeight.setEnabled(false);
     	JLabel totalMoney = new JLabel("Total Money: ", JLabel.LEFT);
-    	tMoney = new JTextField(MyUtil.formatDouble(stations.get(0).getTotalMoney()));
+    	JTextField tMoney = new JTextField("500");
     	tMoney.setEnabled(false);
     	
     	tp_labels.add(rcmID);

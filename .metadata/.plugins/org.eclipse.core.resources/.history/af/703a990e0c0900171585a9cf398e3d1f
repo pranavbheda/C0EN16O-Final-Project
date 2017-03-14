@@ -48,6 +48,7 @@ public class RCM extends JPanel implements ActionListener{
     private String loc, id;
 
     private double totalMoney, totalWeight; // in pounds
+    private double totalTransactions;
 
     // Allowed items to be recycled
     private ArrayList<RecyclableItem> itemsAllowed;
@@ -250,7 +251,8 @@ public class RCM extends JPanel implements ActionListener{
             double itemValue = getValueOfItem(item);
             recycleItem(item);
             //labelValue.setText("Item Value: " + itemValue);
-            history.append(type + ", Weight: " + weight + ", Value: " + itemValue + ", Time: " +  dateFormat.format(date)  +  "\r\n");
+            history.append(type + ", Weight: " + weight + ", Value: " + itemValue + ", Time: " +  dateFormat.format(date)  + getItemsRecycled().size() +  "\r\n");
+            totalTransactions++;
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Invalid Input");
         }

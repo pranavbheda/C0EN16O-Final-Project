@@ -217,7 +217,7 @@ public class RCM extends JPanel implements ActionListener{
         // Text Area
         JPanel panelHistory = new JPanel();
         JLabel historyTitle = new JLabel("Transactions: ");
-        history = new JTextArea(15, 37);
+        history = new JTextArea(15, 40);
         JScrollPane scrollPane = new JScrollPane(history);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		history.setEditable(false);
@@ -250,7 +250,8 @@ public class RCM extends JPanel implements ActionListener{
             double itemValue = getValueOfItem(item);
             recycleItem(item);
             //labelValue.setText("Item Value: " + itemValue);
-            history.append(type + ", Weight: " + weight + ", Value: " + itemValue + ", Time: " +  dateFormat.format(date)  +  "\r\n");
+            //totalWeight += weight;
+            history.append(type + ", Weight: " + weight + ", Value: " + itemValue + ", Time: " +  dateFormat.format(date) + getTotalWeight() + "\r\n");
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Invalid Input");
         }

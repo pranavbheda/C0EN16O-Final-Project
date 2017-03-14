@@ -250,7 +250,7 @@ public class RCM extends JPanel implements ActionListener{
             double itemValue = getValueOfItem(item);
             recycleItem(item);
             //labelValue.setText("Item Value: " + itemValue);
-            history.append(type + ", Weight: " + weight + ", Value: " + itemValue + ", Time: " +  dateFormat.format(date)  +  "\r\n");
+            history.append(type + ", Weight: " + weight + ", Value: " + itemValue + ", Time: " +  dateFormat.format(date) + getTotalWeight() + "\r\n");
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Invalid Input");
         }

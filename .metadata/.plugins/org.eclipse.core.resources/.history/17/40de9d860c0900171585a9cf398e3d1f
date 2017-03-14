@@ -162,7 +162,7 @@ public class RMOS extends JPanel implements ActionListener{
     	super.revalidate();
     	
     	JPanel totalPanel = new JPanel();
-    	totalPanel.setLayout(new GridLayout(3,0));
+    	totalPanel.setLayout(new GridLayout(0,2));
     	
     	JPanel tp_labels = new JPanel();
     	rcmID = new JLabel("RCM 1");
