@@ -26,7 +26,7 @@ public class RMOS extends JPanel implements ActionListener{
     /* GUI Variables ----------------------------- */
     
     JLabel userLabel, passLabel, rcmID, empty_time;
-    JButton rcm1Total, rcm2Total, newPrice_btn;
+    JButton rcm1Total, rcm2Total;
     
     // panel to show recycle type
     JPanel changePanel;
@@ -153,13 +153,7 @@ public class RMOS extends JPanel implements ActionListener{
 		}
 		
 		if(e.getSource() == empty_btn){
-			// empty RCM
-		}
-		
-		if(e.getSource() == newPrice_btn){
-			updatePrice(stations.get(0), (String) cb.getSelectedItem(), Double.parseDouble(cp_newPrice.getText()));
-			cp_currPrice.setText(cp_newPrice.getText());
-			changePanel.revalidate();
+			
 		}
 	}
 	
@@ -244,13 +238,9 @@ public class RMOS extends JPanel implements ActionListener{
     	
     	cp_newPriceLabel = new JLabel("New Price: ");
     	cp_newPrice = new JTextField(10);
-    	
-    	newPrice_btn = new JButton("Enter");
-    	newPrice_btn.addActionListener(this);
-    	
  	
     	r_item.add(cp_type); r_item.add(cp_priceLabel); r_item.add(cp_currPrice);
-    	r_item.add(cp_newPriceLabel); r_item.add(cp_newPrice); r_item.add(newPrice_btn);
+    	r_item.add(cp_newPriceLabel); r_item.add(cp_newPrice);
     	
     	changePanel.add(r_item);
     	super.add(changePanel);

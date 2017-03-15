@@ -25,14 +25,14 @@ public class RMOS extends JPanel implements ActionListener{
     
     /* GUI Variables ----------------------------- */
     
-    JLabel userLabel, passLabel, rcmID, empty_time;
-    JButton rcm1Total, rcm2Total, newPrice_btn;
+    JLabel userLabel, passLabel, rcmID;
+    JButton rcm1Total, rcm2Total;
     
     // panel to show recycle type
     JPanel changePanel;
     JLabel cp_type, cp_priceLabel, cp_newPriceLabel;
-    JTextField cp_currPrice, cp_newPrice, tWeight, tMoney, empty_tf;
-    JButton cp_add, cp_remove, goButton, empty_btn;
+    JTextField cp_currPrice, cp_newPrice, tWeight, tMoney;
+    JButton cp_add, cp_remove, goButton;
 	final JComboBox<String> cb = new JComboBox<String>(recyItems);
     
     JTextField usernameTF, passwordTF;
@@ -152,15 +152,7 @@ public class RMOS extends JPanel implements ActionListener{
 			changePanel.revalidate();
 		}
 		
-		if(e.getSource() == empty_btn){
-			// empty RCM
-		}
 		
-		if(e.getSource() == newPrice_btn){
-			updatePrice(stations.get(0), (String) cb.getSelectedItem(), Double.parseDouble(cp_newPrice.getText()));
-			cp_currPrice.setText(cp_newPrice.getText());
-			changePanel.revalidate();
-		}
 	}
 	
 		
@@ -199,21 +191,9 @@ public class RMOS extends JPanel implements ActionListener{
     	rcm1Total.addActionListener(this);
     	rcm2Total.addActionListener(this);
     	
-    	JPanel emptiedLast = new JPanel();
-    	empty_time = new JLabel("Last Emptied: ");
-    	empty_tf = new JTextField("05:05:05");
-    	empty_tf.setEnabled(false);
-    	empty_btn = new JButton("Empty RCM");
-    	
-    	emptiedLast.add(empty_time);
-    	emptiedLast.add(empty_tf);
-    	emptiedLast.add(empty_btn);
-    	
-    	totalPanel.add(emptiedLast);
-    	empty_btn.addActionListener(this);
+    	totalPanel.setSize(500, 100);
     	
     	super.add(totalPanel);
-    	
     	
     	
     	changePanel = new JPanel();
@@ -244,13 +224,9 @@ public class RMOS extends JPanel implements ActionListener{
     	
     	cp_newPriceLabel = new JLabel("New Price: ");
     	cp_newPrice = new JTextField(10);
-    	
-    	newPrice_btn = new JButton("Enter");
-    	newPrice_btn.addActionListener(this);
-    	
  	
     	r_item.add(cp_type); r_item.add(cp_priceLabel); r_item.add(cp_currPrice);
-    	r_item.add(cp_newPriceLabel); r_item.add(cp_newPrice); r_item.add(newPrice_btn);
+    	r_item.add(cp_newPriceLabel); r_item.add(cp_newPrice);
     	
     	changePanel.add(r_item);
     	super.add(changePanel);

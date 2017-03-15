@@ -157,9 +157,7 @@ public class RMOS extends JPanel implements ActionListener{
 		}
 		
 		if(e.getSource() == newPrice_btn){
-			updatePrice(stations.get(0), (String) cb.getSelectedItem(), Double.parseDouble(cp_newPrice.getText()));
-			cp_currPrice.setText(cp_newPrice.getText());
-			changePanel.revalidate();
+			updatePrice(, (String) cb.getSelectedItem(), Double.parseDouble(cp_newPrice.getText()));
 		}
 	}
 	
