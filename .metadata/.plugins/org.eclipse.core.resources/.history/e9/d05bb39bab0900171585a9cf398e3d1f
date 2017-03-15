@@ -50,7 +50,7 @@ public class RCM extends JPanel implements ActionListener{
     private double totalMoney, totalWeight; // in pounds
     
 
-	String lastEmptied = "00:00:00";
+	String lastEmptied;
 
     // Allowed items to be recycled
     private ArrayList<RecyclableItem> itemsAllowed;

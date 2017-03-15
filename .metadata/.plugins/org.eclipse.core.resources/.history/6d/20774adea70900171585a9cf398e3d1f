@@ -49,8 +49,9 @@ public class RCM extends JPanel implements ActionListener{
 
     private double totalMoney, totalWeight; // in pounds
     
-
-	String lastEmptied = "00:00:00";
+    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	Date date = new Date();
+	String lastEmptied;
 
     // Allowed items to be recycled
     private ArrayList<RecyclableItem> itemsAllowed;
@@ -166,8 +167,6 @@ public class RCM extends JPanel implements ActionListener{
      * Removes all items from the RCM and resets the total weight to zero.
      */
     public void emptyRCM(){
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-    	Date date = new Date();
         itemsRecycled.removeAll(itemsRecycled);
         setTotalWeight(0.0);
         lastEmptied = dateFormat.format(date);
@@ -330,7 +329,7 @@ public class RCM extends JPanel implements ActionListener{
     
     
     public String getLastEmptied(){
-    	return lastEmptied;
+    	return dateFormat.format(date);
     }
     
     

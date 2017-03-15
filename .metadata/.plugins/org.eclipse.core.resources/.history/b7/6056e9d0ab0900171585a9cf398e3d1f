@@ -182,19 +182,6 @@ public class RMOS extends JPanel implements ActionListener{
 				changePanel.revalidate();
 			}
 		}
-		
-		if(e.getSource() == restock_btn){
-			if(rcm1){
-				stations.get(0).restock();
-				tMoney.setText(MyUtil.formatDouble(stations.get(0).getTotalMoney()));
-				changePanel.revalidate();
-			}
-			else if(!rcm1){
-				stations.get(1).restock();
-				tMoney.setText(MyUtil.formatDouble(stations.get(1).getTotalMoney()));
-				changePanel.revalidate();
-			}
-		}
 	}
 	
 		
@@ -244,7 +231,6 @@ public class RMOS extends JPanel implements ActionListener{
     	rcm1Total.addActionListener(this);
     	rcm2Total.addActionListener(this);
     	empty_btn.addActionListener(this);
-    	restock_btn.addActionListener(this);
     	
     	super.add(totalPanel);
     	

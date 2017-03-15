@@ -31,7 +31,7 @@ public class RMOS extends JPanel implements ActionListener{
     /* GUI Variables ----------------------------- */
     
     JLabel userLabel, passLabel, rcmID, empty_time;
-    JButton rcm1Total, rcm2Total, newPrice_btn, restock_btn;
+    JButton rcm1Total, rcm2Total, newPrice_btn;
     
     // panel to show recycle type
     JPanel changePanel;
@@ -182,19 +182,6 @@ public class RMOS extends JPanel implements ActionListener{
 				changePanel.revalidate();
 			}
 		}
-		
-		if(e.getSource() == restock_btn){
-			if(rcm1){
-				stations.get(0).restock();
-				tMoney.setText(MyUtil.formatDouble(stations.get(0).getTotalMoney()));
-				changePanel.revalidate();
-			}
-			else if(!rcm1){
-				stations.get(1).restock();
-				tMoney.setText(MyUtil.formatDouble(stations.get(1).getTotalMoney()));
-				changePanel.revalidate();
-			}
-		}
 	}
 	
 		
@@ -227,24 +214,21 @@ public class RMOS extends JPanel implements ActionListener{
     	tp_labels.add(empty_time);
     	tp_labels.add(empty_tf);
     	
-    	rcm1Total = new JButton("View RCM 1");
-    	rcm2Total = new JButton("View RCM 2");
+    	rcm1Total = new JButton("RCM1 Totals");
+    	rcm2Total = new JButton("RCM2 Totals");
     	empty_btn = new JButton("Empty RCM");
-    	restock_btn = new JButton("Restock RCM");
 
     	
     	JPanel tp_button = new JPanel();
     	tp_button.add(rcm1Total);
     	tp_button.add(rcm2Total);
     	tp_button.add(empty_btn);
-    	tp_button.add(restock_btn);
     	
     	totalPanel.add(tp_labels);
     	totalPanel.add(tp_button);
     	rcm1Total.addActionListener(this);
     	rcm2Total.addActionListener(this);
     	empty_btn.addActionListener(this);
-    	restock_btn.addActionListener(this);
     	
     	super.add(totalPanel);
     	

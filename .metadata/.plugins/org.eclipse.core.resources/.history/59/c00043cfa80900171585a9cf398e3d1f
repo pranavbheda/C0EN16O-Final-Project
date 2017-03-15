@@ -25,13 +25,14 @@ public class RMOS extends JPanel implements ActionListener{
     // private User admin;
     
     private String[] recyItems = {"Plastic", "Aluminum", "Paper"};
-
+    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	Date date = new Date();
     
 	boolean rcm1 = true;
     /* GUI Variables ----------------------------- */
     
     JLabel userLabel, passLabel, rcmID, empty_time;
-    JButton rcm1Total, rcm2Total, newPrice_btn, restock_btn;
+    JButton rcm1Total, rcm2Total, newPrice_btn;
     
     // panel to show recycle type
     JPanel changePanel;
@@ -114,7 +115,6 @@ public class RMOS extends JPanel implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent e){
-        
 		if (e.getSource() == submitButton){
 			if(passwordTF.getText().equals(_password)){
 				// login
@@ -159,7 +159,10 @@ public class RMOS extends JPanel implements ActionListener{
 			updateStats();
 			changePanel.revalidate();
 		}
-	
+		
+		if(e.getSource() == empty_btn){
+			// empty RCM
+		}
 		
 		if(e.getSource() == newPrice_btn){
 			updatePrice(stations.get(0), (String) cb.getSelectedItem(), Double.parseDouble(cp_newPrice.getText()));
@@ -168,30 +171,14 @@ public class RMOS extends JPanel implements ActionListener{
 		}
 		
 		if(e.getSource() == empty_btn){
-
 			if(rcm1){
 				stations.get(0).emptyRCM();
 				empty_tf.setText(stations.get(0).getLastEmptied());
-				tWeight.setText(MyUtil.formatDouble(stations.get(0).getTotalWeight()));
 				changePanel.revalidate();
 			}
 			else if(!rcm1){
 				stations.get(1).emptyRCM();
 				empty_tf.setText(stations.get(1).getLastEmptied());
-				tWeight.setText(MyUtil.formatDouble(stations.get(1).getTotalWeight()));
-				changePanel.revalidate();
-			}
-		}
-		
-		if(e.getSource() == restock_btn){
-			if(rcm1){
-				stations.get(0).restock();
-				tMoney.setText(MyUtil.formatDouble(stations.get(0).getTotalMoney()));
-				changePanel.revalidate();
-			}
-			else if(!rcm1){
-				stations.get(1).restock();
-				tMoney.setText(MyUtil.formatDouble(stations.get(1).getTotalMoney()));
 				changePanel.revalidate();
 			}
 		}
@@ -215,36 +202,36 @@ public class RMOS extends JPanel implements ActionListener{
     	tMoney = new JTextField(MyUtil.formatDouble(stations.get(0).getTotalMoney()));
     	tMoney.setEnabled(false);
     	
-    	empty_time = new JLabel("Last Emptied: ");
-    	empty_tf = new JTextField(stations.get(0).getLastEmptied());
-    	empty_tf.setEnabled(false);
-    	
     	tp_labels.add(rcmID);
     	tp_labels.add(totalWeight);
     	tp_labels.add(tWeight);
     	tp_labels.add(totalMoney);
     	tp_labels.add(tMoney);
-    	tp_labels.add(empty_time);
-    	tp_labels.add(empty_tf);
-    	
-    	rcm1Total = new JButton("View RCM 1");
-    	rcm2Total = new JButton("View RCM 2");
-    	empty_btn = new JButton("Empty RCM");
-    	restock_btn = new JButton("Restock RCM");
+    	rcm1Total = new JButton("RCM1 Totals");
+    	rcm2Total = new JButton("RCM2 Totals");
 
     	
     	JPanel tp_button = new JPanel();
     	tp_button.add(rcm1Total);
     	tp_button.add(rcm2Total);
-    	tp_button.add(empty_btn);
-    	tp_button.add(restock_btn);
     	
     	totalPanel.add(tp_labels);
     	totalPanel.add(tp_button);
     	rcm1Total.addActionListener(this);
     	rcm2Total.addActionListener(this);
+    	
+    	JPanel emptiedLast = new JPanel();
+    	empty_time = new JLabel("Last Emptied: ");
+    	empty_tf = new JTextField(stations.get(0).getLastEmptied());
+    	empty_tf.setEnabled(false);
+    	empty_btn = new JButton("Empty RCM");
+    	
+    	emptiedLast.add(empty_time);
+    	emptiedLast.add(empty_tf);
+    	emptiedLast.add(empty_btn);
+    	
+    	totalPanel.add(emptiedLast);
     	empty_btn.addActionListener(this);
-    	restock_btn.addActionListener(this);
     	
     	super.add(totalPanel);
     	

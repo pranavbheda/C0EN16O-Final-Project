@@ -187,12 +187,6 @@ public class RMOS extends JPanel implements ActionListener{
 			if(rcm1){
 				stations.get(0).restock();
 				tMoney.setText(MyUtil.formatDouble(stations.get(0).getTotalMoney()));
-				changePanel.revalidate();
-			}
-			else if(!rcm1){
-				stations.get(1).restock();
-				tMoney.setText(MyUtil.formatDouble(stations.get(1).getTotalMoney()));
-				changePanel.revalidate();
 			}
 		}
 	}
