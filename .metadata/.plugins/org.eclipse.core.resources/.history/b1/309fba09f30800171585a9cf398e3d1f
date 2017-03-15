@@ -1,0 +1,54 @@
+package finalProject;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+@SuppressWarnings("serial")
+public class Display extends JFrame implements ActionListener {
+
+	JPanel rmos = new RMOS();
+	JPanel rcm1 = new RCM("San Jose", "001");
+	JPanel rcm2 = new RCM("San Fran", "002");
+
+	
+	public Display(String titleText) {
+		super(titleText);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new GridLayout(2,2,10,10));
+		
+
+		// add RMOS Panel
+		super.getContentPane().add(rmos);
+		
+		
+		// ADD RCM Panels
+		
+		
+		
+		
+		// full screen
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+    	setUndecorated(true);
+		setVisible(true);
+
+   
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

@@ -1,0 +1,164 @@
+import java.util.*;
+import java.util.List;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+/**
+ * An RMOS allows administrators to monitor a group of Recycling Monitoring
+ * Stations (RMOS). Each RMOS monitors a group of RCMs. An RMOS is represented
+ * by GUI components to enable an administrator to do the following:
+ *
+ *
+ *
+ * @author Pranav
+ *
+ */
+@SuppressWarnings("serial")
+public class RMOS extends JPanel implements ActionListener{
+    private ArrayList<RCM> stations;
+    // private User admin;
+    
+    /* GUI Variables ----------------------------- */
+    
+    JLabel userLabel, passLabel;
+    JTextField usernameTF, passwordTF;
+    JButton submitButton;
+    JFrame jframe;
+    
+    /* Hash Map for Password---------------------- */
+    
+   protected String _password = "password";
+   Map <String, List<String>> rcmData = new HashMap<String, List<String>>();
+   
+   
+   
+    /* Constructor ------------------------------- */
+
+    public RMOS(){
+        stations = new ArrayList<RCM>();
+        login();
+    }
+
+    public void addRCM(RCM... rcm){
+        for(RCM r : rcm){
+            stations.add(r);
+        }
+    }
+
+    public void getStats(){
+        for(RCM r : stations){
+            System.out.println(r.getId() + " " + r.getLoc() + " " + MyUtil
+                    .formatDouble(r.getTotalWeight()) + " " + r
+                            .getTotalMoney());
+        }
+    }
+
+    /**
+     * Allow the user to log in with a user name.
+     */
+    public void login(){
+    	initializeLoginGUI();
+    	
+    }
+    
+    public void initializeLoginGUI(){
+    	JPanel panel1, panel2;
+    	jframe = new JFrame("Login Controller");
+    	jframe.setSize(500, 150);
+    	
+    	Container container = jframe.getContentPane();
+    	container.setLayout(new BorderLayout());
+    	
+    	panel1 = new JPanel();
+    	userLabel = new JLabel("Username: ", JLabel.LEFT);
+    	usernameTF = new JTextField(10);
+    	passLabel = new JLabel("Password: ", JLabel.LEFT);
+    	passwordTF  = new JTextField(10);
+    	panel1.add(userLabel);
+    	panel1.add(usernameTF);
+    	panel1.add(passLabel);
+    	panel1.add(passwordTF);
+    	
+    	panel2 = new JPanel();
+    	submitButton = new JButton("Submit");
+    	panel2.add(submitButton);
+    	
+    	submitButton.addActionListener(this);
+    	
+    	container.add(panel1, BorderLayout.NORTH);
+    	container.add(panel2, BorderLayout.SOUTH);
+    	
+    	jframe.setLocationRelativeTo(null);
+    	jframe.setVisible(true);
+    	jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    public void actionPerformed(ActionEvent e){
+		if (e.getSource() == submitButton){
+			if(passwordTF.getText().equals(_password)){
+				// login
+				initializeRMOSGUI();
+			}
+			else {
+				// login failed
+			}
+		}
+	}
+		
+    
+    public void initializeRMOSGUI(){
+
+    	/*panel1 = new JPanel();
+    	JLabel totalWeight = new JLabel("Total Weight: ", JLabel.LEFT);
+    	JLabel totalMoney = new JLabel("Total Money: ", JLabel.LEFT);
+    	panel1.add(totalWeight);
+    	panel1.add(totalMoney);
+    	*/
+
+    	
+    	
+    	
+    }
+    
+
+    /**
+     * Change/add new types of recyclable items.
+     */
+    public void removeType(){
+
+    }
+
+    /**
+     * Change/add new types of recyclable items.
+     */
+    public void addType(){
+
+    }
+    
+    /**
+     * Change/add new types of recyclable items.
+     */
+    public void updatePrice(RCM rcm, String type, double newPrice){
+        rcm.updateAllowedItem(type, newPrice);
+    }
+    
+    
+    
+
+    /**
+     * Check and display the amount of money in a specific RCM.
+     */
+    public void display(){
+
+    }
+
+    /**
+     * Check and display the current (and available) capacity (by weight or
+     * volume) of an RCM. This indicates whether an RCM is full and needs to be
+     * emptied.
+     */
+    public void getAvailability(){
+
+    }
+}

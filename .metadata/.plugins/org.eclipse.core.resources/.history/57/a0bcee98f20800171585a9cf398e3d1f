@@ -1,0 +1,8 @@
+package finalProject;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Graph extends JPanel {
+
+}
