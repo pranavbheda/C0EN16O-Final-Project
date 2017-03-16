@@ -1,7 +1,7 @@
 package finalProject;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +13,6 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -48,15 +47,14 @@ public class RCM extends JPanel implements ActionListener{
     private String loc, id;
 
     private double totalMoney, totalWeight; // in pounds
-    
 
-	String lastEmptied = "00:00:00";
+    String lastEmptied = "00:00:00";
 
     // Allowed items to be recycled
     private ArrayList<RecyclableItem> itemsAllowed;
 
     // Items that have been recycled
-    private ArrayList<RecycledItem> itemsRecycled;
+    public ArrayList<RecycledItem> itemsRecycled;
 
     /* GUI Variables ------------------------------------------------------- */
 
@@ -167,7 +165,7 @@ public class RCM extends JPanel implements ActionListener{
      */
     public void emptyRCM(){
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-    	Date date = new Date();
+        Date date = new Date();
         itemsRecycled.removeAll(itemsRecycled);
         setTotalWeight(0.0);
         lastEmptied = dateFormat.format(date);
@@ -189,7 +187,7 @@ public class RCM extends JPanel implements ActionListener{
     public void initializeGUI(){
         setSize(800, 100);
         super.setLayout(new FlowLayout());
-    	super.setBorder(BorderFactory.createLineBorder(Color.black));
+        super.setBorder(BorderFactory.createLineBorder(Color.black));
 
         // RCM Info
         panelInfo = new JPanel();
@@ -219,18 +217,17 @@ public class RCM extends JPanel implements ActionListener{
         panelAdd.add(labelValue);
 
         addButton.addActionListener(this);
-        
+
         // Text Area
         JPanel panelHistory = new JPanel();
         JLabel historyTitle = new JLabel("Transactions: ");
         history = new JTextArea(15, 37);
         JScrollPane scrollPane = new JScrollPane(history);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		history.setEditable(false);
-		panelHistory.add(historyTitle);
-		panelHistory.add(scrollPane);
-       
-        
+        scrollPane.setVerticalScrollBarPolicy(
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        history.setEditable(false);
+        panelHistory.add(historyTitle);
+        panelHistory.add(scrollPane);
 
         super.add(panelInfo, BorderLayout.WEST);
         super.add(panelType, BorderLayout.NORTH);
@@ -247,20 +244,22 @@ public class RCM extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e){
-    	DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-    	Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date();
         try{
             String type = idType.getText();
             double weight = Double.valueOf(idWeight.getText());
             RecycledItem item = new RecycledItem(type, weight);
             double itemValue = getValueOfItem(item);
             recycleItem(item);
-            //labelValue.setText("Item Value: " + itemValue);
-            history.append(type + ", Weight: " + weight + ", Value: " + itemValue + ", Time: " +  dateFormat.format(date)  +  "\r\n");
+            // labelValue.setText("Item Value: " + itemValue);
+            history.append(type + ", Weight: " + weight + ", Value: "
+                    + itemValue + ", Time: " + dateFormat.format(date)
+                    + "\r\n");
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Invalid Input");
         }
-        
+
     }
 
     /* Getter and Setters -------------------------------------------------- */
@@ -327,14 +326,10 @@ public class RCM extends JPanel implements ActionListener{
     public double getTotalWeight(){
         return totalWeight;
     }
-    
-    
+
     public String getLastEmptied(){
-    	return lastEmptied;
+        return lastEmptied;
     }
-    
-    
-    
 
     /**
      * @param totalWeight the total weight to be set
