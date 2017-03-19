@@ -1,0 +1,13 @@
+package finalProject;
+
+import javax.swing.*;
+import java.awt.*;
+
+@SuppressWarnings("serial")
+public class Graph extends JPanel {
+
+	BarChart test = new BarChart();
+	public Graph(){
+		BarChart();
+	}
+}

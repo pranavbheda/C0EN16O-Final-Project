@@ -1,0 +1,23 @@
+package finalProject;
+
+import javax.swing.*;
+import java.awt.*;
+
+@SuppressWarnings("serial")
+public class Graph extends JPanel {
+
+	public Graph(){
+		JFrame frame = new JFrame("Bar Chart");
+        DataManager datamanager = new DataManager();
+        datamanager.readFromRCM(null);
+
+        BarChart chart = new BarChart(datamanager.getData());
+        chart.setSize(500, 700);
+
+        frame.setSize(600, 800);
+        frame.getContentPane().add(chart);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+	}
+}
