@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -20,7 +19,6 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class BarChart extends JPanel{
     private Map<Color, Integer> bars = new LinkedHashMap<Color, Integer>();
-   // ArrayList<String> names;
     String temp;
     ArrayList<Data> data = new ArrayList<Data>();
 
@@ -30,23 +28,12 @@ public class BarChart extends JPanel{
      * @param data the map of data to be set
      */
     public BarChart(Map<Color, Data> a, ArrayList<RecycledItem> RI){
-    	data.clear();
+        data.clear();
         for(Color keyColor : a.keySet()){
             Data d = a.get(keyColor);
             data.add(d);
-            System.out.println(d.getType());
             bars.put(keyColor, new Integer(d.count));
         }
-        /*
-        for(RecycledItem i : RI){
-        	if(temp == i.getType()){
-        		continue;
-        	}
-        	else{
-        		rI.add(i);
-        	}
-    	}
-    	*/
     }
 
     /**
@@ -61,9 +48,9 @@ public class BarChart extends JPanel{
         // paint bars
         int width;
         if(bars.size() == 0){
-        	width = (getWidth() / 1) - 2;
-        } else {
-        	width = (getWidth() / bars.size()) - 2;
+            width = (getWidth() / 1) - 2;
+        }else{
+            width = (getWidth() / bars.size()) - 2;
         }
         int x = 1;
         int index = 0;
@@ -74,11 +61,12 @@ public class BarChart extends JPanel{
             g.fillRect(x, getHeight() - height, width, height);
             g.setColor(Color.black);
             g.drawRect(x, getHeight() - height, width, height);
-            g.drawString(data.get(index).getType(), x, getHeight() - height/2);
-            g.drawString("transactions: " + data.get(index).getCount(), x , getHeight() - height/2 + 12);
+            g.drawString(data.get(index).getType(), x, getHeight() - height
+                    / 2);
+            g.drawString("transactions: " + data.get(index).getCount(), x,
+                    getHeight() - height / 2 + 12);
             x += (width + 2);
             index++;
-            
         }
     }
 

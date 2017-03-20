@@ -1,7 +1,6 @@
 package finalProject;
-import java.awt.BorderLayout;
+
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -14,16 +13,13 @@ import java.util.Date;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 /**
@@ -48,15 +44,14 @@ public class RCM extends JPanel implements ActionListener{
     /* RCM Variables ------------------------------------------------------- */
 
     JComboBox<String> rcmValues = new JComboBox<String>();
-    
+
     private final double TOTAL_RMS_MONEY = 200.00;
 
     private String loc, id;
 
     private double totalMoney, totalWeight, totalTransactions; // in pounds
-    
 
-	String lastEmptied = "00:00:00";
+    String lastEmptied = "00:00:00";
 
     // Allowed items to be recycled
     private ArrayList<RecyclableItem> itemsAllowed;
@@ -66,9 +61,8 @@ public class RCM extends JPanel implements ActionListener{
 
     /* GUI Variables ------------------------------------------------------- */
 
-    private JLabel labelType, labelWeight, labelValue, titleLabel;
-    private JPanel panelType, panelWeight, panelAdd, panelInfo, panelTitle;
-    private JTextField idType, idWeight;
+    private JLabel titleLabel;
+    private JPanel panelAdd, panelInfo, panelTitle;
     private JButton addButton;
     JTextArea history, item_D;
 
@@ -138,7 +132,8 @@ public class RCM extends JPanel implements ActionListener{
         if(index == -1){ // throw error here
             return -1;
         }
-        return Math.round(item.getWeight() * itemsAllowed.get(index).getCost() * 100.0) / 100.0;
+        return Math.round(item.getWeight() * itemsAllowed.get(index).getCost()
+                * 100.0) / 100.0;
     }
 
     /**
@@ -174,7 +169,7 @@ public class RCM extends JPanel implements ActionListener{
      */
     public void emptyRCM(){
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-    	Date date = new Date();
+        Date date = new Date();
         itemsRecycled.removeAll(itemsRecycled);
         setTotalWeight(0.0);
         lastEmptied = dateFormat.format(date);
@@ -196,59 +191,50 @@ public class RCM extends JPanel implements ActionListener{
     public void initializeGUI(){
         setSize(800, 100);
         super.setLayout(new GridLayout(5, 1));
-    	super.setBorder(BorderFactory.createLineBorder(Color.black));
-    	
-    	//RCM TITLE
-    	panelTitle = new JPanel();
-    	titleLabel = new JLabel("RCM: " + getId());
-    	Font rcmFont = new Font("Georgia", Font.BOLD, 20);
-    	titleLabel.setFont(rcmFont);
-    	panelTitle.add(titleLabel);
+        super.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        // RCM TITLE
+        panelTitle = new JPanel();
+        titleLabel = new JLabel("RCM: " + getId());
+        Font rcmFont = new Font("Georgia", Font.BOLD, 20);
+        titleLabel.setFont(rcmFont);
+        panelTitle.add(titleLabel);
 
         // RCM Info
         panelInfo = new JPanel();
         panelInfo.setLayout(new FlowLayout());
-        panelInfo.add(new JLabel("        Location: " + getLoc(), JLabel.CENTER));
+        panelInfo.add(new JLabel("        Location: " + getLoc(),
+                JLabel.CENTER));
         panelInfo.add(new JLabel("        ID: " + getId(), JLabel.CENTER));
 
         panelTitle.add(panelInfo);
-        
+
         JPanel itemData = new JPanel();
-        //JLabel historyTitle = new JLabel("Transactions: ");
+        // JLabel historyTitle = new JLabel("Transactions: ");
         item_D = new JTextArea(5, 45);
         JScrollPane scrollPane = new JScrollPane(item_D);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		item_D.setEditable(false);
-		itemData.add(scrollPane);
-		//setItemData();
-        
-		
-		
-		// Recyclable Type
-        /*
-        panelType = new JPanel();
-        labelType = new JLabel("Type: ", JLabel.LEFT);
-        panelType.add(labelType);
-        idType = new JTextField(10);
-        panelType.add(idType);
+        scrollPane.setVerticalScrollBarPolicy(
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        item_D.setEditable(false);
+        itemData.add(scrollPane);
+        // setItemData();
 
-        // Item Weight
-        panelWeight = new JPanel();
-        labelWeight = new JLabel("Weight: ", JLabel.CENTER);
-        panelWeight.add(labelWeight);
-        idWeight = new JTextField(10);
-        panelWeight.add(idWeight);
-
-        // Add Button and Item Vallue
+        // Recyclable Type
         /*
-        panelAdd = new JPanel();
-        addButton = new JButton("Recycle Item");
-        panelAdd.add(addButton);
-        labelValue = new JLabel();
-        panelAdd.add(labelValue);
-        
-        */
-        
+         * panelType = new JPanel(); labelType = new JLabel("Type: ",
+         * JLabel.LEFT); panelType.add(labelType); idType = new JTextField(10);
+         * panelType.add(idType);
+         *
+         * // Item Weight panelWeight = new JPanel(); labelWeight = new JLabel(
+         * "Weight: ", JLabel.CENTER); panelWeight.add(labelWeight); idWeight =
+         * new JTextField(10); panelWeight.add(idWeight);
+         *
+         * // Add Button and Item Vallue /* panelAdd = new JPanel(); addButton =
+         * new JButton("Recycle Item"); panelAdd.add(addButton); labelValue =
+         * new JLabel(); panelAdd.add(labelValue);
+         *
+         */
+
         panelAdd = new JPanel();
         rcmValues.setVisible(true);
         setCB();
@@ -257,31 +243,28 @@ public class RCM extends JPanel implements ActionListener{
         panelAdd.add(addButton);
 
         addButton.addActionListener(this);
-        
+
         // Text Area
         JPanel panelHistory = new JPanel();
-        //JLabel historyTitle = new JLabel("Transactions: ");
+        // JLabel historyTitle = new JLabel("Transactions: ");
         history = new JTextArea(5, 45);
         JScrollPane scrollPane1 = new JScrollPane(history);
-		scrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		history.setEditable(false);
-		panelHistory.add(scrollPane1);
-		
-		//panelHistory.add(historyTitle);
-		
-       
-        
-		super.add(panelTitle);
-        
+        scrollPane1.setVerticalScrollBarPolicy(
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        history.setEditable(false);
+        panelHistory.add(scrollPane1);
+
+        // panelHistory.add(historyTitle);
+
+        super.add(panelTitle);
+
         super.add(itemData);
-        
-        //super.add(panelType);
-        //super.add(panelWeight);
-        
+
+        // super.add(panelType);
+        // super.add(panelWeight);
+
         super.add(panelAdd);
         super.add(panelHistory);
-        
-        
 
         // show the frame in the center of the screen
 
@@ -292,9 +275,9 @@ public class RCM extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e){
-    	DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-    	Date date = new Date();
-    	Random rn = new Random();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date();
+        Random rn = new Random();
         try{
             String type = (String) rcmValues.getSelectedItem();
             double weight = Double.valueOf(rn.nextInt(5) + 1);
@@ -302,42 +285,46 @@ public class RCM extends JPanel implements ActionListener{
             RecycledItem item = new RecycledItem(type, weight);
             double itemValue = getValueOfItem(item);
             recycleItem(item);
-            //labelValue.setText("Item Value: " + itemValue);
-            history.append(type + ", Weight: " + weight + ", Value: " + itemValue + ", Time: " +  dateFormat.format(date)  +  "\r\n");
+            // labelValue.setText("Item Value: " + itemValue);
+            history.append(type + ", Weight: " + weight + ", Value: "
+                    + itemValue + ", Time: " + dateFormat.format(date)
+                    + "\r\n");
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Invalid Input");
         }
-        
+
     }
 
     /* Getter and Setters -------------------------------------------------- */
 
     public void setItemData(){
-    	item_D.removeAll();
-    	Font f = new Font("Andale Mono 14", Font.CENTER_BASELINE, 12 );
-    	item_D.setFont(f);
+        item_D.removeAll();
+        Font f = new Font("Andale Mono 14", Font.CENTER_BASELINE, 12);
+        item_D.setFont(f);
 
-    	for(RecyclableItem _ri : itemsAllowed){
-    		item_D.setText(String.format(_ri.getType() + " ----------> " +  _ri.getCost() + " $/lb" + "\r\n"));
-    	}
+        for(RecyclableItem _ri : itemsAllowed){
+            item_D.setText(String.format(_ri.getType() + " ----------> " + _ri
+                    .getCost() + " $/lb" + "\r\n"));
+        }
     }
-    
+
     public double getTotalTransactions(){
-    	return totalTransactions;
+        return totalTransactions;
     }
-    
+
     public void setCB(){
-    	rcmValues.removeAllItems();
-    	item_D.setText("");
-    	Font f = new Font("Andale Mono 14", Font.CENTER_BASELINE, 12 );
-    	item_D.setFont(f);
-    	
-    	for(RecyclableItem item : itemsAllowed){
-    		rcmValues.addItem(item.getType());
-    		item_D.append(String.format(item.getType() + " ----------> " +  item.getCost() + " $/lb" + "\r\n"));
-    	}
+        rcmValues.removeAllItems();
+        item_D.setText("");
+        Font f = new Font("Andale Mono 14", Font.CENTER_BASELINE, 12);
+        item_D.setFont(f);
+
+        for(RecyclableItem item : itemsAllowed){
+            rcmValues.addItem(item.getType());
+            item_D.append(String.format(item.getType() + " ----------> " + item
+                    .getCost() + " $/lb" + "\r\n"));
+        }
     }
-    
+
     /**
      * @return the location of the rcm
      */
@@ -373,10 +360,10 @@ public class RCM extends JPanel implements ActionListener{
         return itemsRecycled;
     }
 
-    
     public ArrayList<RecyclableItem> getItemsAllowed(){
-    	return itemsAllowed;
+        return itemsAllowed;
     }
+
     /**
      * @param items the ArrayList of recycled items to be set
      */
@@ -404,18 +391,14 @@ public class RCM extends JPanel implements ActionListener{
     public double getTotalWeight(){
         return totalWeight;
     }
-    
-    
+
     public String getLastEmptied(){
-    	return lastEmptied;
+        return lastEmptied;
     }
-    
+
     public void setTotalTransactions(){
-    	totalTransactions = 0;
+        totalTransactions = 0;
     }
-    
-    
-    
 
     /**
      * @param totalWeight the total weight to be set
@@ -425,19 +408,19 @@ public class RCM extends JPanel implements ActionListener{
     }
 
     public boolean allowedItemExists(String type){
-    	for(RecyclableItem item : itemsAllowed){
-    		if(item.getType() == type){
-    			return true;
-    		}
-    	}
-    	return false;
+        for(RecyclableItem item : itemsAllowed){
+            if(item.getType() == type){
+                return true;
+            }
+        }
+        return false;
     }
+
     public void addAllowedItem(RecyclableItem recyclableItem){
         if(!itemsAllowed.contains(recyclableItem)){
             itemsAllowed.add(recyclableItem);
-        }
-        else if(itemsAllowed.contains(recyclableItem)){
-        	return;
+        }else if(itemsAllowed.contains(recyclableItem)){
+            return;
         }
     }
 
@@ -453,22 +436,22 @@ public class RCM extends JPanel implements ActionListener{
             }
         }
     }
-    
+
     public double getItemPrice(String type){
-    	for(RecyclableItem item : itemsAllowed){
-    		if(item.getType() == type){
-    			return item.getCost();
-    		}
-    	}
-    	return 0;
+        for(RecyclableItem item : itemsAllowed){
+            if(item.getType() == type){
+                return item.getCost();
+            }
+        }
+        return 0;
     }
-    
+
     public void setItemPrice(String type, double cost){
-    	for(RecyclableItem item : itemsAllowed){
-    		if(item.getType() == type){
-    			item.setCost(cost);
-    		}
-    	}
+        for(RecyclableItem item : itemsAllowed){
+            if(item.getType() == type){
+                item.setCost(cost);
+            }
+        }
     }
 
     /**
