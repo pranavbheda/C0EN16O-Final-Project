@@ -1,9 +1,9 @@
 /**
+ * File: RMOS.java
  *
- * File: RMOS.java Description: An RMOS allows administrators to monitor a group
- * of Recycling Monitoring Stations (RMOS). Each RMOS monitors a group of RCMs.
- * An RMOS is represented by GUI components to enable an administrator to do the
- * following:
+ * Description: An RMOS allows administrators to monitor a group of Recycling
+ * Monitoring Stations (RMOS). Each RMOS monitors a group of RCMs. An RMOS is
+ * represented by GUI components to enable an administrator to do the following:
  *
  * @author Pranav Bheda
  * @author Gurneev Sareen

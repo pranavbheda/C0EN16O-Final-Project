@@ -1,5 +1,7 @@
 /**
- * File: RecyclableItem.java Description: Items that are able to be recycled.
+ * File: RecyclableItem.java
+ *
+ * Description: Items that are able to be recycled.
  *
  * @author Pranav Bheda
  * @author Gurneev Sareen

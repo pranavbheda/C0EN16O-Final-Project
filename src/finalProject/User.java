@@ -1,5 +1,7 @@
 /**
- * File: User.java Description: User class for Login system
+ * File: User.java
+ *
+ * Description: User class for Login system
  *
  * @author Pranav Bheda
  * @author Gurneev Sareen

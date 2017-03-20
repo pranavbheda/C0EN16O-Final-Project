@@ -1,5 +1,7 @@
 /**
- * File: Tester.java Description: Class to Test the project
+ * File: Tester.java
+ * 
+ * Description: Class to Test the project
  *
  * @author Pranav Bheda
  * @author Gurneev Sareen

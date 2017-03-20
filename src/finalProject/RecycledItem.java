@@ -1,5 +1,7 @@
 /**
- * File: RecycledItem.java Description: Class for items that have been recycled.
+ * File: RecycledItem.java
+ *
+ * Description: Class for items that have been recycled.
  *
  * @author Pranav Bheda
  * @author Gurneev Sareen
