@@ -1,5 +1,10 @@
 package finalProject;
 
+/**
+ * User class
+ * @author Gurneev
+ *
+ */
 public class User{
     private String username;
     private String password;
