@@ -1,14 +1,16 @@
+/**
+ * File: RecyclableItem.java Description: Items that are able to be recycled.
+ *
+ * @author Pranav Bheda
+ * @author Gurneev Sareen
+ */
+
 package finalProject;
 
-/**
- * Items that are able to be recycled.
- *
- * @author Pranav
- *
- */
 public class RecyclableItem{
-    private String type;
+
     private double costPerPound;
+    private String type;
 
     /**
      * Constructor for Recyclable Items
@@ -16,23 +18,9 @@ public class RecyclableItem{
      * @param type the type of item
      * @param costPerPound the cost per pound of the item
      */
-    public RecyclableItem(String type, double costPerPound){
+    public RecyclableItem(final String type, final double costPerPound){
         setType(type);
         setCost(costPerPound);
-    }
-
-    /**
-     * @return the type of the item
-     */
-    public String getType(){
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type){
-        this.type = type;
     }
 
     /**
@@ -43,9 +31,23 @@ public class RecyclableItem{
     }
 
     /**
+     * @return the type of the item
+     */
+    public String getType(){
+        return type;
+    }
+
+    /**
      * @param costPerPound the costPerPound to set
      */
-    public void setCost(double costPerPound){
+    public void setCost(final double costPerPound){
         this.costPerPound = costPerPound;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(final String type){
+        this.type = type;
     }
 }

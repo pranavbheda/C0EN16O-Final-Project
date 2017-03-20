@@ -1,3 +1,13 @@
+/**
+ * File: DataManager.java
+ *
+ * Description: DataManager class reads sales data from a text file and loads a
+ * data structure of type Hashmap
+ *
+ * @author Pranav Bheda
+ * @author Gurneev Sareen
+ */
+
 package finalProject;
 
 import java.awt.Color;
@@ -7,30 +17,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * DataManager class reads sales data from a text file and loads a data
- * structure of type Hashmap
- */
 public class DataManager{
-    private Map<Color, Data> managedData = new LinkedHashMap<Color, Data>();
-    private Map<String, Integer> values = new HashMap<String, Integer>();
-    List<String> items = new ArrayList<String>();
+    private final List<String> items;
+    private final Map<Color, Data> managedData;
+    private final Map<String, Integer> values;
 
-    public void readFromRCM(RCM rcm){
+    public DataManager(){
+        managedData = new LinkedHashMap<Color, Data>();
+        values = new HashMap<String, Integer>();
+        items = new ArrayList<String>();
+    }
 
-        for(RecycledItem i : rcm.getItemsRecycled()){
-            if(!values.containsKey(i.getType())){
-                values.put(i.getType(), 1);
-                items.add(i.getType());
-            }else{
-                values.put(i.getType(), values.get(i.getType()) + 1);
-            }
-        }
-
-        for(Map.Entry<String, Integer> entry : values.entrySet()){
-            managedData.put(new Color((int) (Math.random() * 0x1000000)),
-                    new Data(entry.getKey(), entry.getValue()));
-        }
+    /**
+     * @return the managed data
+     */
+    public Map<Color, Data> getData(){
+        return managedData;
     }
 
     /**
@@ -41,9 +43,21 @@ public class DataManager{
     }
 
     /**
-     * @return the managed data
+     * Reads the data from teh RCM and writes it to the the map of ManagedData
      */
-    public Map<Color, Data> getData(){
-        return managedData;
+    public void readFromRCM(final RCM rcm){
+
+        for(final RecycledItem i : rcm.getItemsRecycled()){
+            if(!values.containsKey(i.getType())){
+                values.put(i.getType(), 1);
+                items.add(i.getType());
+            }else{
+                values.put(i.getType(), values.get(i.getType()) + 1);
+            }
+        }
+        for(final Map.Entry<String, Integer> entry : values.entrySet()){
+            managedData.put(new Color((int) (Math.random() * 0x1000000)),
+                    new Data(entry.getKey(), entry.getValue()));
+        }
     }
 }

@@ -1,31 +1,19 @@
+/**
+ * File: User.java Description: User class for Login system
+ *
+ * @author Pranav Bheda
+ * @author Gurneev Sareen
+ */
+
 package finalProject;
 
-/**
- * User class
- * @author Gurneev
- *
- */
 public class User{
-    private String username;
-    private String password;
 
-    public User(String username, String password){
+    private String password, username;
+
+    public User(final String username, final String password){
         setUsername(username);
         setPassword(password);
-    }
-
-    /**
-     * @return the username
-     */
-    public String getUsername(){
-        return username;
-    }
-
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username){
-        this.username = username;
     }
 
     /**
@@ -36,9 +24,23 @@ public class User{
     }
 
     /**
+     * @return the username
+     */
+    public String getUsername(){
+        return username;
+    }
+
+    /**
      * @param password the password to set
      */
-    public void setPassword(String password){
+    public void setPassword(final String password){
         this.password = password;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(final String username){
+        this.username = username;
     }
 }

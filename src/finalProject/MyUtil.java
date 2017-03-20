@@ -1,12 +1,16 @@
+/**
+ * File: MyUtil.java
+ *
+ * Description: Static Helper Functions
+ *
+ * @author Pranav Bheda
+ * @author Gurneev Sareen
+ */
+
 package finalProject;
+
 import java.text.DecimalFormat;
 
-/**
- * Static Helper Functions
- *
- * @author Pranav
- *
- */
 public class MyUtil{
 
     /**
@@ -16,7 +20,7 @@ public class MyUtil{
      * @param d The double to be formated
      * @return A formated String with two decimal places
      */
-    public static String formatDouble(double d){
+    public static String formatDouble(final double d){
         return new DecimalFormat("#0.00").format(d);
     }
 }

@@ -1,8 +1,17 @@
+/**
+ * File: Data.java
+ *
+ * Description: Data object to generate graphs
+ *
+ * @author Pranav Bheda
+ * @author Gurneev Sareen
+ */
+
 package finalProject;
 
 public class Data{
-    String type;
-    int count;
+    private String type;
+    private int count;
 
     /**
      * Constructor for Data

@@ -1,3 +1,12 @@
+/**
+ * File: BarChar.java
+ *
+ * Description: Class to draw a box chart.
+ *
+ * @author Pranav Bheda
+ * @author Gurneev Sareen
+ */
+
 package finalProject;
 
 import java.awt.Color;
@@ -10,39 +19,45 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
-/**
- * Class to draw a box chart.
- *
- * @author Pranav, Gurneev
- *
- */
-@SuppressWarnings("serial")
 public class BarChart extends JPanel{
-    private Map<Color, Integer> bars = new LinkedHashMap<Color, Integer>();
-    String temp;
-    ArrayList<Data> data = new ArrayList<Data>();
+
+    private static final long serialVersionUID = 1L;
+
+    private final Map<Color, Integer> bars;
+
+    private final ArrayList<Data> data;
 
     /**
      * Constructor for BarChart. The data parameter is set o the map of bars.
      *
      * @param data the map of data to be set
      */
-    public BarChart(Map<Color, Data> a, ArrayList<RecycledItem> RI){
+    public BarChart(final Map<Color, Data> a, final ArrayList<RecycledItem> RI){
+        data = new ArrayList<Data>();
+        bars = new LinkedHashMap<Color, Integer>();
         data.clear();
-        for(Color keyColor : a.keySet()){
-            Data d = a.get(keyColor);
+        for(final Color keyColor : a.keySet()){
+            final Data d = a.get(keyColor);
             data.add(d);
-            bars.put(keyColor, new Integer(d.count));
+            bars.put(keyColor, new Integer(d.getCount()));
         }
+    }
+
+    /**
+     * Sets the size for the graph
+     */
+    @Override
+    public Dimension getPreferredSize(){
+        return new Dimension(bars.size() * 10 + 2, 50);
     }
 
     /**
      * Draws the graph with the Graphics Object
      */
-    private void drawGraph(Graphics g){
+    private void drawGraph(final Graphics g){
         // determine longest bar
         int max = Integer.MIN_VALUE;
-        for(Integer value : bars.values()){
+        for(final Integer value : bars.values()){
             max = Math.max(max, value);
         }
         // paint bars
@@ -54,9 +69,10 @@ public class BarChart extends JPanel{
         }
         int x = 1;
         int index = 0;
-        for(Color color : bars.keySet()){
-            int value = bars.get(color);
-            int height = (int) ((getHeight() - 5) * ((double) value / max));
+        for(final Color color : bars.keySet()){
+            final int value = bars.get(color);
+            final int height = (int) ((getHeight() - 5) * ((double) value
+                    / max));
             g.setColor(color);
             g.fillRect(x, getHeight() - height, width, height);
             g.setColor(Color.black);
@@ -74,18 +90,9 @@ public class BarChart extends JPanel{
      * Draws the title and the graph
      */
     @Override
-    protected void paintComponent(Graphics gp){
+    protected void paintComponent(final Graphics gp){
         super.paintComponent(gp);
-        // Cast the graphics objects to Graphics2D
-        Graphics2D g = (Graphics2D) gp;
+        final Graphics2D g = (Graphics2D) gp;
         drawGraph(g);
-    }
-
-    /**
-     * Sets the size for the graph
-     */
-    @Override
-    public Dimension getPreferredSize(){
-        return new Dimension(bars.size() * 10 + 2, 50);
     }
 }

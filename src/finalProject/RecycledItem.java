@@ -1,10 +1,16 @@
+/**
+ * File: RecycledItem.java Description: Class for items that have been recycled.
+ *
+ * @author Pranav Bheda
+ * @author Gurneev Sareen
+ */
+
 package finalProject;
+
 public class RecycledItem{
 
     private String type;
     private double weight; // in pounds
-
-    /* Constructor --------------------------------------------------------- */
 
     /**
      * Constructor for RecycledItem
@@ -12,25 +18,16 @@ public class RecycledItem{
      * @param type the type to be set
      * @param weight the weight to be set
      */
-    public RecycledItem(String type, double weight){
+    public RecycledItem(final String type, final double weight){
         setType(type);
         setWeight(weight);
     }
-
-    /* Getter and Setters -------------------------------------------------- */
 
     /**
      * @return the type of the item
      */
     public String getType(){
         return type;
-    }
-
-    /**
-     * @param type the type to be set
-     */
-    public void setType(String type){
-        this.type = type;
     }
 
     /**
@@ -41,19 +38,16 @@ public class RecycledItem{
     }
 
     /**
-     * @param weight the weight to be set
+     * @param type the type to be set
      */
-    public void setWeight(double weight){
-        this.weight = weight;
+    public void setType(final String type){
+        this.type = type;
     }
 
-    /* Print Functions ----------------------------------------------------- */
-
     /**
-     * Prints out the object. Used for debugging
+     * @param weight the weight to be set
      */
-    @Override
-    public String toString(){
-        return getType() + " " + MyUtil.formatDouble(getWeight()) + " lbs";
+    public void setWeight(final double weight){
+        this.weight = weight;
     }
 }
