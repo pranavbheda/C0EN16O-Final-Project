@@ -480,5 +480,4 @@ public class RMOS extends JPanel implements ActionListener{
             return 1;
         }
     }
-
 }
