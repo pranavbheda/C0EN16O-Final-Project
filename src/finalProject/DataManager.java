@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 public class DataManager{
-    private final List<String> items;
-    private final Map<Color, Data> managedData;
-    private final Map<String, Integer> values;
+    private List<String> items;
+    private Map<Color, Data> managedData;
+    private Map<String, Integer> values;
 
     public DataManager(){
         managedData = new LinkedHashMap<Color, Data>();
@@ -45,9 +45,9 @@ public class DataManager{
     /**
      * Reads the data from teh RCM and writes it to the the map of ManagedData
      */
-    public void readFromRCM(final RCM rcm){
+    public void readFromRCM(RCM rcm){
 
-        for(final RecycledItem i : rcm.getItemsRecycled()){
+        for(RecycledItem i : rcm.getItemsRecycled()){
             if(!values.containsKey(i.getType())){
                 values.put(i.getType(), 1);
                 items.add(i.getType());
@@ -55,7 +55,7 @@ public class DataManager{
                 values.put(i.getType(), values.get(i.getType()) + 1);
             }
         }
-        for(final Map.Entry<String, Integer> entry : values.entrySet()){
+        for(Map.Entry<String, Integer> entry : values.entrySet()){
             managedData.put(new Color((int) (Math.random() * 0x1000000)),
                     new Data(entry.getKey(), entry.getValue()));
         }

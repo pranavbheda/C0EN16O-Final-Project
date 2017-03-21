@@ -33,7 +33,7 @@ import javax.swing.SwingUtilities;
 
 public class RMOS extends JPanel implements ActionListener{
 
-    private static final String _password = "password";
+    private static final String PASSWORD = "password";
 
     private static final long serialVersionUID = 1L;
 
@@ -47,9 +47,9 @@ public class RMOS extends JPanel implements ActionListener{
     private JLabel cp_type, cp_priceLabel, cp_newPriceLabel, userLabel,
             passLabel, rcmID, empty_time;
 
-    private JButton goButton, empty_btn, mostUsed, logout, newPrice_btn,
-            restock_btn, addBtn, removeBtn, rcm1Graph, viewKilo, RCM_btn,
-            submitButton;
+    private JButton goButton, emptyButton, mostUsed, logout, newPriceButton,
+            restockButton, addButton, removeButton, rcm1Graph, viewKilo,
+            statsButton, submitButton;
 
     private boolean rcm1;
 
@@ -57,168 +57,105 @@ public class RMOS extends JPanel implements ActionListener{
 
     public RMOS(){
         stations = new ArrayList<RCM>();
-        login();
+        initializeLoginGUI();
         rcm1 = true;
         cb = new JComboBox<String>();
         cb_rcms = new JComboBox<String>();
     }
 
     @Override
-    public void actionPerformed(final ActionEvent e){
+    public void actionPerformed(ActionEvent e){
+
+        int rcm = getWhichRCM();
 
         if(e.getSource() == submitButton){
-            if(passwordTF.getText().equals(_password)){
+            if(passwordTF.getText().equals(PASSWORD)){
                 // login
                 initializeRMOSGUI();
             }else{
                 // login failed
                 JOptionPane.showMessageDialog(null,
-                        "Wrong Password! Try again :) ");
+                        "Wrong Password! Try again");
             }
         }
 
         if(e.getSource() == goButton){
-            String s = (String) cb.getSelectedItem();
-            s = s.toLowerCase();
-
-            if(rcm1){
-                cp_currPrice.setText(MyUtil.formatDouble(stations.get(0)
-                        .getItemPrice(s)));
-            }else if(!rcm1){
-                cp_currPrice.setText(MyUtil.formatDouble(stations.get(1)
-                        .getItemPrice(s)));
-            }
-
+            String s = ((String) cb.getSelectedItem()).toLowerCase();
+            cp_currPrice.setText(MyUtil.formatDouble(stations.get(rcm)
+                    .getItemPrice(s)));
             changePanel.revalidate();
         }
 
         // View RCM button
-        if(e.getSource() == RCM_btn){
-            final String s = (String) cb_rcms.getSelectedItem();
+        if(e.getSource() == statsButton){
+            String s = (String) cb_rcms.getSelectedItem();
             if(s == "RCM 1"){
                 rcm1 = true;
-                rcmID.setText(
-                        "--------------------------- Info for RCM: 1 ---------------------------");
-                tWeight.setText(MyUtil.formatDouble(stations.get(0)
-                        .getTotalWeight()));
-                tMoney.setText(MyUtil.formatDouble(stations.get(0)
-                        .getTotalMoney()));
-                updateStats();
-                setCB(stations.get(0));
-                empty_tf.setText(stations.get(0).getLastEmptied());
-                changePanel.revalidate();
             }else if(s == "RCM 2"){
                 rcm1 = false;
-                rcmID.setText(
-                        "--------------------------- Info for RCM: 2 ---------------------------");
-                tWeight.setText(MyUtil.formatDouble(stations.get(1)
-                        .getTotalWeight()));
-                tMoney.setText(MyUtil.formatDouble(stations.get(1)
-                        .getTotalMoney()));
-                updateStats();
-                setCB(stations.get(1));
-                empty_tf.setText(stations.get(1).getLastEmptied());
-
-                changePanel.revalidate();
             }
+            String rcmId;
+            if(rcm == 0){
+                rcmId = "1";
+            }else{
+                rcmId = "2";
+            }
+            rcmID.setText("--------------------------- Info for RCM:  " + rcmId
+                    + 1 + " ---------------------------");
+            tWeight.setText(MyUtil.formatDouble(stations.get(rcm)
+                    .getTotalWeight()));
+            tMoney.setText(MyUtil.formatDouble(stations.get(rcm)
+                    .getTotalMoney()));
+            // updateStats();
+            setCB(stations.get(rcm));
+            empty_tf.setText(stations.get(rcm).getLastEmptied());
+            changePanel.revalidate();
         }
 
         // change price action
-        if(e.getSource() == newPrice_btn){
-            if(rcm1){
-                String s = (String) cb.getSelectedItem();
-                s = s.toLowerCase();
-                stations.get(0).setItemPrice(s, Double.parseDouble(cp_newPrice
-                        .getText()));
-                System.out.println(stations.get(0).getItemPrice(s));
-                cp_currPrice.setText(MyUtil.formatDouble(stations.get(0)
-                        .getItemPrice(s)));
-                stations.get(0).setCB();
-            }else if(!rcm1){
-                String s = (String) cb.getSelectedItem();
-                s = s.toLowerCase();
-                stations.get(1).updateAllowedItem(s, Double.parseDouble(
-                        cp_newPrice.getText()));
-                cp_currPrice.setText(MyUtil.formatDouble(stations.get(1)
-                        .getItemPrice(s)));
-                stations.get(1).setCB();
-            }
-
+        if(e.getSource() == newPriceButton){
+            String s = (String) cb.getSelectedItem();
+            s = s.toLowerCase();
+            stations.get(rcm).updateAllowedItem(s, Double.parseDouble(
+                    cp_newPrice.getText()));
+            cp_currPrice.setText(MyUtil.formatDouble(stations.get(rcm)
+                    .getItemPrice(s)));
+            stations.get(rcm).setCB();
             changePanel.revalidate();
         }
 
         // empty action
-        if(e.getSource() == empty_btn){
-
-            if(rcm1){
-                stations.get(0).emptyRCM();
-                stations.get(0).setTotalTransactions();
-                empty_tf.setText(stations.get(0).getLastEmptied());
-                tWeight.setText(MyUtil.formatDouble(stations.get(0)
-                        .getTotalWeight()));
-
-                changePanel.revalidate();
-            }else if(!rcm1){
-                stations.get(1).emptyRCM();
-                stations.get(1).setTotalTransactions();
-                empty_tf.setText(stations.get(1).getLastEmptied());
-                tWeight.setText(MyUtil.formatDouble(stations.get(1)
-                        .getTotalWeight()));
-                changePanel.revalidate();
-            }
+        if(e.getSource() == emptyButton){
+            stations.get(rcm).emptyRCM();
+            empty_tf.setText(stations.get(rcm).getLastEmptied());
+            tWeight.setText(MyUtil.formatDouble(stations.get(rcm)
+                    .getTotalWeight()));
+            changePanel.revalidate();
         }
 
         // restock action
-        if(e.getSource() == restock_btn){
-            if(rcm1){
-                stations.get(0).restock();
-                tMoney.setText(MyUtil.formatDouble(stations.get(0)
-                        .getTotalMoney()));
-                changePanel.revalidate();
-            }else if(!rcm1){
-                stations.get(1).restock();
-                tMoney.setText(MyUtil.formatDouble(stations.get(1)
-                        .getTotalMoney()));
-                changePanel.revalidate();
-            }
+        if(e.getSource() == restockButton){
+            stations.get(rcm).restock();
+            tMoney.setText(MyUtil.formatDouble(stations.get(rcm)
+                    .getTotalMoney()));
+            changePanel.revalidate();
         }
 
         // add new item button
-        if(e.getSource() == addBtn){
+        if(e.getSource() == addButton){
+            double newCost = Double.parseDouble(item_addCost.getText());
+            String newType = item_add.getText().toLowerCase();
 
-            if(rcm1){
-                String s = item_add.getText();
-                s = s.toLowerCase();
-                System.out.println(s);
-
-                if(!stations.get(0).allowedItemExists(s)){
-                    System.out.println("False");
-                    final RecyclableItem i = new RecyclableItem(s, Double
-                            .parseDouble(item_addCost.getText()));
-                    stations.get(0).addAllowedItem(i);
-                }
-
-                cb.removeAllItems();
-                for(final RecyclableItem item : stations.get(0)
-                        .getItemsAllowed()){
-                    cb.addItem(item.getType());
-                }
-
-                changePanel.revalidate();
-                stations.get(0).setCB();
-            }else if(!rcm1){
-                cb.removeAllItems();
-                final RecyclableItem i = new RecyclableItem(item_add.getText(),
-                        Double.parseDouble(item_addCost.getText()));
-                stations.get(1).addAllowedItem(i);
-                for(final RecyclableItem item : stations.get(1)
-                        .getItemsAllowed()){
-                    cb.addItem(item.getType());
-                }
-
-                changePanel.revalidate();
-                stations.get(1).setCB();
+            if(!stations.get(rcm).allowedItemExists(newType)){
+                stations.get(rcm).addAllowedItem(new RecyclableItem(newType,
+                        newCost));
             }
+            cb.removeAllItems();
+            for(RecyclableItem item : stations.get(0).getItemsAllowed()){
+                cb.addItem(item.getType());
+            }
+            changePanel.revalidate();
+            stations.get(1).setCB();
         }
 
         // most used action
@@ -228,97 +165,67 @@ public class RMOS extends JPanel implements ActionListener{
         }
 
         // remove item button action
-        if(e.getSource() == removeBtn){
-            if(rcm1){
-                stations.get(0).removeAllowedItem((String) cb
-                        .getSelectedItem());
-                cb.removeItem(cb.getSelectedItem());
-                changePanel.revalidate();
-                stations.get(0).setCB();
-            }else if(!rcm1){
-                stations.get(1).removeAllowedItem((String) cb
-                        .getSelectedItem());
-                cb.removeItem(cb.getSelectedItem());
-                changePanel.revalidate();
-                stations.get(1).setCB();
-            }
+        if(e.getSource() == removeButton){
+            stations.get(rcm).removeAllowedItem((String) cb.getSelectedItem());
+            cb.removeItem(cb.getSelectedItem());
+            changePanel.revalidate();
+            stations.get(rcm).setCB();
+
         }
 
         // graph button
         if(e.getSource() == rcm1Graph){
-            if(rcm1){
-                graphData(stations.get(0));
-            }else if(!rcm1){
-                graphData(stations.get(1));
-            }
-
+            graphData(stations.get(rcm));
         }
 
         // logout button
         if(e.getSource() == logout){
-            final Window w = SwingUtilities.getWindowAncestor(this);
+            Window w = SwingUtilities.getWindowAncestor(this);
             w.dispose();
         }
 
         // view in kilograms
         if(e.getSource() == viewKilo){
-            double kilo;
-            if(rcm1){
-                kilo = stations.get(0).getTotalWeight();
-            }else{
-                kilo = stations.get(1).getTotalMoney();
-            }
+            double kilo = stations.get(rcm).getTotalWeight();
+            kilo *= 0.453592;
 
-            kilo = 0.453592 * kilo;
             JOptionPane.showMessageDialog(null, "Total Weight: " + Math.round(
                     kilo * 100.0) / 100.0 + " kg");
         }
     }
 
-    public void addRCM(final RCM... rcm){
-        for(final RCM r : rcm){
+    public void addRCM(RCM... rcm){
+        for(RCM r : rcm){
             stations.add(r);
         }
     }
 
-    public ArrayList<RCM> getStations(){
-        return stations;
-    }
-
-    public void getStats(){
-        for(final RCM r : stations){
-            System.out.println(r.getId() + " " + r.getLoc() + " " + MyUtil
-                    .formatDouble(r.getTotalWeight()) + " " + r
-                            .getTotalMoney());
-        }
-    }
-
     // graph bar chart
-    public void graphData(final RCM r){
-        final JFrame frame = new JFrame("Bar Chart");
+    public void graphData(RCM r){
+        JFrame frame = new JFrame("Bar Chart");
         frame.setLayout(new BorderLayout());
-        final DataManager datamanager = new DataManager();
+        DataManager datamanager = new DataManager();
         datamanager.readFromRCM(r);
 
-        final BarChart chart = new BarChart(datamanager.getData(), r
+        BarChart chart = new BarChart(datamanager.getData(), r
                 .getItemsRecycled());
         chart.setSize(500, 700);
 
         frame.setSize(600, 800);
         frame.getContentPane().add(chart, BorderLayout.CENTER);
 
-        final JPanel title = new JPanel();
-        final JLabel t = new JLabel(r.getId());
+        JPanel title = new JPanel();
+        JLabel t = new JLabel(r.getId());
         title.add(t);
         frame.getContentPane().add(title, BorderLayout.NORTH);
 
-        final JPanel yAxis = new JPanel();
-        final JLabel y = new JLabel("Transactions");
+        JPanel yAxis = new JPanel();
+        JLabel y = new JLabel("Transactions");
         yAxis.add(y);
         frame.getContentPane().add(yAxis, BorderLayout.WEST);
 
-        final JPanel xAxis = new JPanel();
-        final JLabel x = new JLabel("Item Types");
+        JPanel xAxis = new JPanel();
+        JLabel x = new JLabel("Item Types");
         xAxis.add(x);
         frame.getContentPane().add(xAxis, BorderLayout.SOUTH);
 
@@ -358,25 +265,25 @@ public class RMOS extends JPanel implements ActionListener{
         super.revalidate();
         super.setLayout(new GridLayout(1, 2));
 
-        final JPanel totalPanel = new JPanel();
+        JPanel totalPanel = new JPanel();
         totalPanel.setLayout(new GridLayout(7, 1));
 
         /* RMOS TITLE ----------------------------------- */
-        final JPanel rmosPanel = new JPanel();
-        final Font fontRMOS = new Font("Georgia", Font.BOLD, 24);
-        final Font fontRCM = new Font("Georgia", Font.CENTER_BASELINE, 16);
+        JPanel rmosPanel = new JPanel();
+        Font fontRMOS = new Font("Georgia", Font.BOLD, 24);
+        Font fontRCM = new Font("Georgia", Font.CENTER_BASELINE, 16);
 
-        final JLabel rmosLabel = new JLabel("RMOS CONTROL");
+        JLabel rmosLabel = new JLabel("RMOS CONTROL");
         rmosLabel.setFont(fontRMOS);
 
-        final JPanel whichRCM = new JPanel();
-        final JLabel rcmSelection = new JLabel("Get Information of RCM: ");
+        JPanel whichRCM = new JPanel();
+        JLabel rcmSelection = new JLabel("Get Information of RCM: ");
         cb_rcms.setVisible(true);
         setRCM_CB();
-        RCM_btn = new JButton("Get Information");
-        RCM_btn.addActionListener(this);
+        statsButton = new JButton("Get Information");
+        statsButton.addActionListener(this);
 
-        final JPanel rcmPanel = new JPanel();
+        JPanel rcmPanel = new JPanel();
         rcmID = new JLabel(
                 "--------------------------- Info for RCM: 1 ---------------------------");
         rcmID.setFont(fontRCM);
@@ -385,7 +292,7 @@ public class RMOS extends JPanel implements ActionListener{
         rmosPanel.add(rmosLabel);
         whichRCM.add(rcmSelection);
         whichRCM.add(cb_rcms);
-        whichRCM.add(RCM_btn);
+        whichRCM.add(statsButton);
         rcmPanel.add(rcmID);
 
         totalPanel.add(rmosPanel);
@@ -394,12 +301,12 @@ public class RMOS extends JPanel implements ActionListener{
 
         /* Info Panel ------------------------------------------------ */
 
-        final JPanel tp_labels = new JPanel();
-        final JLabel totalWeight = new JLabel("Total Weight: ", JLabel.LEFT);
+        JPanel tp_labels = new JPanel();
+        JLabel totalWeight = new JLabel("Total Weight: ", JLabel.LEFT);
         tWeight = new JTextField(MyUtil.formatDouble(stations.get(0)
                 .getTotalWeight()));
         tWeight.setEnabled(false);
-        final JLabel totalMoney = new JLabel("Total Money: ", JLabel.LEFT);
+        JLabel totalMoney = new JLabel("Total Money: ", JLabel.LEFT);
         tMoney = new JTextField(MyUtil.formatDouble(stations.get(0)
                 .getTotalMoney()));
         tMoney.setEnabled(false);
@@ -415,44 +322,39 @@ public class RMOS extends JPanel implements ActionListener{
         tp_labels.add(empty_time);
         tp_labels.add(empty_tf);
 
-        empty_btn = new JButton("Empty RCM");
-        restock_btn = new JButton("Restock RCM");
+        emptyButton = new JButton("Empty RCM");
+        restockButton = new JButton("Restock RCM");
 
-        final JPanel tp_button = new JPanel();
+        JPanel tp_button = new JPanel();
 
-        tp_button.add(empty_btn);
-        tp_button.add(restock_btn);
+        tp_button.add(emptyButton);
+        tp_button.add(restockButton);
 
-        final JPanel otherOptions = new JPanel();
-        final JLabel options = new JLabel(
+        JPanel otherOptions = new JPanel();
+        JLabel options = new JLabel(
                 "--------------------------- Other Options ---------------------------");
         options.setFont(fontRCM);
         options.setForeground(Color.BLUE);
         otherOptions.add(options);
 
-        final JPanel graphPanel = new JPanel();
+        JPanel graphPanel = new JPanel();
         rcm1Graph = new JButton("Graph Data");
         mostUsed = new JButton("Get Most Used");
         viewKilo = new JButton("View Kilograms");
-        // rcm2Graph = new JButton("Graph RCM 2");
         graphPanel.add(rcm1Graph);
         graphPanel.add(mostUsed);
         graphPanel.add(viewKilo);
-        // graphPanel.add(rcm2Graph);
         rcm1Graph.addActionListener(this);
         viewKilo.addActionListener(this);
-        // rcm2Graph.addActionListener(this);
 
         totalPanel.add(tp_labels);
         totalPanel.add(tp_button);
         totalPanel.add(otherOptions);
         totalPanel.add(graphPanel);
 
-        // rcm1Total.addActionListener(this);
-        // rcm2Total.addActionListener(this);
         mostUsed.addActionListener(this);
-        empty_btn.addActionListener(this);
-        restock_btn.addActionListener(this);
+        emptyButton.addActionListener(this);
+        restockButton.addActionListener(this);
 
         super.add(totalPanel);
 
@@ -460,12 +362,12 @@ public class RMOS extends JPanel implements ActionListener{
         changePanel.setLayout(new GridLayout(5, 1));
         changePanel.setVisible(true);
 
-        final JLabel user = new JLabel("USER: ");
-        final JTextField userTF = new JTextField(15);
+        JLabel user = new JLabel("USER: ");
+        JTextField userTF = new JTextField(15);
         userTF.setText("Gurneev");
         userTF.setEnabled(false);
 
-        final JPanel logoutPanel = new JPanel();
+        JPanel logoutPanel = new JPanel();
         logout = new JButton("Log Out");
         logoutPanel.add(user);
         logoutPanel.add(userTF);
@@ -473,17 +375,17 @@ public class RMOS extends JPanel implements ActionListener{
         changePanel.add(logoutPanel);
         logout.addActionListener(this);
 
-        final JPanel typeTitlePanel = new JPanel();
-        final JLabel type_heading = new JLabel(
+        JPanel typeTitlePanel = new JPanel();
+        JLabel type_heading = new JLabel(
                 "--------------------------- Edit Recyclable Items ---------------------------");
-        final Font fontHeading = new Font("Georgia", Font.CENTER_BASELINE, 16);
+        Font fontHeading = new Font("Georgia", Font.CENTER_BASELINE, 16);
         type_heading.setFont(fontHeading);
 
         typeTitlePanel.add(type_heading);
         changePanel.add(typeTitlePanel);
 
-        final JPanel recyclableTypes = new JPanel();
-        final JLabel cPDescription = new JLabel("Recyclable Types: ");
+        JPanel recyclableTypes = new JPanel();
+        JLabel cPDescription = new JLabel("Recyclable Types: ");
         recyclableTypes.add(cPDescription);
 
         cb.setVisible(true);
@@ -494,13 +396,13 @@ public class RMOS extends JPanel implements ActionListener{
         recyclableTypes.add(goButton);
         goButton.addActionListener(this);
 
-        removeBtn = new JButton("Remove Item");
-        removeBtn.addActionListener(this);
-        recyclableTypes.add(removeBtn);
+        removeButton = new JButton("Remove Item");
+        removeButton.addActionListener(this);
+        recyclableTypes.add(removeButton);
 
         changePanel.add(recyclableTypes);
 
-        final JPanel r_item = new JPanel();
+        JPanel r_item = new JPanel();
         cp_type = new JLabel("Plastic: ");
 
         cp_priceLabel = new JLabel("Current Price: ");
@@ -511,43 +413,35 @@ public class RMOS extends JPanel implements ActionListener{
         cp_newPriceLabel = new JLabel("New Price: ");
         cp_newPrice = new JTextField(10);
 
-        newPrice_btn = new JButton("Enter");
-        newPrice_btn.addActionListener(this);
+        newPriceButton = new JButton("Enter");
+        newPriceButton.addActionListener(this);
 
         r_item.add(cp_type);
         r_item.add(cp_priceLabel);
         r_item.add(cp_currPrice);
         r_item.add(cp_newPriceLabel);
         r_item.add(cp_newPrice);
-        r_item.add(newPrice_btn);
+        r_item.add(newPriceButton);
 
         changePanel.add(r_item);
 
-        final JPanel addPanel = new JPanel();
-        final JLabel itemType = new JLabel("Item Type: ");
+        JPanel addPanel = new JPanel();
+        JLabel itemType = new JLabel("Item Type: ");
         item_add = new JTextField(10);
-        final JLabel itemCost = new JLabel("Item Cost: ");
+        JLabel itemCost = new JLabel("Item Cost: ");
         item_addCost = new JTextField(5);
-        addBtn = new JButton("Add Item");
+        addButton = new JButton("Add Item");
 
         addPanel.add(itemType);
         addPanel.add(item_add);
         addPanel.add(itemCost);
         addPanel.add(item_addCost);
-        addPanel.add(addBtn);
-        addBtn.addActionListener(this);
+        addPanel.add(addButton);
+        addButton.addActionListener(this);
 
         changePanel.add(addPanel);
 
         super.add(changePanel);
-
-    }
-
-    /**
-     * Allow the user to log in with a user name.
-     */
-    public void login(){
-        initializeLoginGUI();
 
     }
 
@@ -562,9 +456,9 @@ public class RMOS extends JPanel implements ActionListener{
     }
 
     // set values of combo box in rcm
-    public void setCB(final RCM rcm){
+    public void setCB(RCM rcm){
         cb.removeAllItems();
-        for(final RecyclableItem item : rcm.getItemsAllowed()){
+        for(RecyclableItem item : rcm.getItemsAllowed()){
             cb.addItem(item.getType());
         }
     }
@@ -577,17 +471,13 @@ public class RMOS extends JPanel implements ActionListener{
     }
 
     /**
-     * Change/add new types of recyclable items.
+     * @return the value of RCM being used
      */
-    public void updatePrice(final RCM rcm, final String type,
-            final double newPrice){
-        rcm.updateAllowedItem(type, newPrice);
-    }
-
-    public void updateStats(){
-        for(final RCM r : stations){
-            r.setTotalWeight(r.getTotalWeight());
-            r.setTotalMoney(r.getTotalMoney());
+    private int getWhichRCM(){
+        if(rcm1 == true){
+            return 0;
+        }else{
+            return 1;
         }
     }
 

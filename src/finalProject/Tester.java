@@ -10,8 +10,7 @@
 package finalProject;
 
 public class Tester{
-
-    public static void main(final String[] args){
+    public static void main(String[] args){
         new Display("final project");
     }
 }

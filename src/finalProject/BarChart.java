@@ -32,12 +32,12 @@ public class BarChart extends JPanel{
      *
      * @param data the map of data to be set
      */
-    public BarChart(final Map<Color, Data> a, final ArrayList<RecycledItem> RI){
+    public BarChart(Map<Color, Data> a, ArrayList<RecycledItem> RI){
         data = new ArrayList<Data>();
         bars = new LinkedHashMap<Color, Integer>();
         data.clear();
-        for(final Color keyColor : a.keySet()){
-            final Data d = a.get(keyColor);
+        for(Color keyColor : a.keySet()){
+            Data d = a.get(keyColor);
             data.add(d);
             bars.put(keyColor, new Integer(d.getCount()));
         }
@@ -54,10 +54,10 @@ public class BarChart extends JPanel{
     /**
      * Draws the graph with the Graphics Object
      */
-    private void drawGraph(final Graphics g){
+    private void drawGraph(Graphics g){
         // determine longest bar
         int max = Integer.MIN_VALUE;
-        for(final Integer value : bars.values()){
+        for(Integer value : bars.values()){
             max = Math.max(max, value);
         }
         // paint bars
@@ -69,10 +69,9 @@ public class BarChart extends JPanel{
         }
         int x = 1;
         int index = 0;
-        for(final Color color : bars.keySet()){
-            final int value = bars.get(color);
-            final int height = (int) ((getHeight() - 5) * ((double) value
-                    / max));
+        for(Color color : bars.keySet()){
+            int value = bars.get(color);
+            int height = (int) ((getHeight() - 5) * ((double) value / max));
             g.setColor(color);
             g.fillRect(x, getHeight() - height, width, height);
             g.setColor(Color.black);
@@ -90,9 +89,9 @@ public class BarChart extends JPanel{
      * Draws the title and the graph
      */
     @Override
-    protected void paintComponent(final Graphics gp){
+    protected void paintComponent(Graphics gp){
         super.paintComponent(gp);
-        final Graphics2D g = (Graphics2D) gp;
+        Graphics2D g = (Graphics2D) gp;
         drawGraph(g);
     }
 }

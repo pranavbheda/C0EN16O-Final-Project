@@ -44,17 +44,19 @@ public class RCM extends JPanel implements ActionListener{
     // Serial Warning
     private static final long serialVersionUID = 1L;
 
-    private static final double TOTAL_RMS_MONEY = 200.00;
+    private static double TOTAL_RMS_MONEY = 200.00;
 
     private JButton addButton;
 
     private JTextArea history, item_D;
 
-    private ArrayList<RecyclableItem> itemsAllowed;
+    private final String id, loc;
 
-    private ArrayList<RecycledItem> itemsRecycled;
+    private final ArrayList<RecyclableItem> itemsAllowed;
 
-    private String lastEmptied, loc, id;
+    private final ArrayList<RecycledItem> itemsRecycled;
+
+    private String lastEmptied;
 
     private JPanel panelAdd, panelInfo, panelTitle;
 
@@ -62,7 +64,7 @@ public class RCM extends JPanel implements ActionListener{
 
     private JLabel titleLabel;
 
-    private double totalMoney, totalWeight, totalTransactions; // in pounds
+    private double totalMoney, totalWeight;
 
     /**
      * Constructor for RCM. The total money is initialized to the default final
@@ -72,39 +74,34 @@ public class RCM extends JPanel implements ActionListener{
      * @param loc the location of the RCM
      * @param id the id of the RCM
      */
-    public RCM(final String loc, final String id){
+    public RCM(String loc, String id){
         super();
-
-        // Sets RCM Variables
         this.loc = loc;
         this.id = id;
+        itemsAllowed = new ArrayList<RecyclableItem>();
         itemsRecycled = new ArrayList<RecycledItem>();
         totalMoney = TOTAL_RMS_MONEY;
         lastEmptied = "00:00:00";
         rcmValues = new JComboBox<String>();
         initRecyclableItems();
-
-        // Sets GUI Variables
         initializeGUI();
     }
 
     @Override
-    public void actionPerformed(final ActionEvent e){
-        final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        final Date date = new Date();
-        final Random rn = new Random();
+    public void actionPerformed(ActionEvent e){
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Random rn = new Random();
         try{
-            final String type = (String) rcmValues.getSelectedItem();
+            String type = (String) rcmValues.getSelectedItem();
             double weight = Double.valueOf(rn.nextInt(5) + 1);
             weight = Math.round(weight + rn.nextDouble() * 100.0) / 100.0;
-            final RecycledItem item = new RecycledItem(type, weight);
-            final double itemValue = getValueOfItem(item);
+            RecycledItem item = new RecycledItem(type, weight);
+            double itemValue = getValueOfItem(item);
             recycleItem(item);
-            // labelValue.setText("Item Value: " + itemValue);
             history.append(type + ", Weight: " + weight + ", Value: "
-                    + itemValue + ", Time: " + dateFormat.format(date)
+                    + itemValue + ", Time: " + dateFormat.format(new Date())
                     + "\r\n");
-        }catch(final NumberFormatException ex){
+        }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Invalid Input");
         }
     }
@@ -114,11 +111,9 @@ public class RCM extends JPanel implements ActionListener{
      *
      * @param recyclableItem new item type of recyclable item to be added
      */
-    public void addAllowedItem(final RecyclableItem recyclableItem){
+    public void addAllowedItem(RecyclableItem recyclableItem){
         if(!itemsAllowed.contains(recyclableItem)){
             itemsAllowed.add(recyclableItem);
-        }else if(itemsAllowed.contains(recyclableItem)){
-            return;
         }
     }
 
@@ -126,10 +121,10 @@ public class RCM extends JPanel implements ActionListener{
      * Checks if the item to be recycled is allowed or not
      *
      * @param type the type of item to be checked
-     * @return whether or not the item is in the list of recycable items
+     * @return whether or not the item is in the list of recyclable items
      */
-    public boolean allowedItemExists(final String type){
-        for(final RecyclableItem item : itemsAllowed){
+    public boolean allowedItemExists(String type){
+        for(RecyclableItem item : itemsAllowed){
             if(item.getType() == type){
                 return true;
             }
@@ -145,20 +140,20 @@ public class RCM extends JPanel implements ActionListener{
         str = str.replace(" ", "");
         str = str.toLowerCase();
 
-        for(final RecyclableItem i : itemsAllowed){
+        for(RecyclableItem i : itemsAllowed){
             if(str.equals(i.getType())){
                 return itemsAllowed.indexOf(i);
             }
         }
-        return -1; // throw error here
+        return -1;
     }
 
     /**
      * Removes all items from the RCM and resets the total weight to zero.
      */
     public void emptyRCM(){
-        final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        final Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date();
         itemsRecycled.removeAll(itemsRecycled);
         setTotalWeight(0.0);
         lastEmptied = dateFormat.format(date);
@@ -177,15 +172,18 @@ public class RCM extends JPanel implements ActionListener{
      * @param type the type to be returned
      * @return the price of the given item
      */
-    public double getItemPrice(final String type){
-        for(final RecyclableItem item : itemsAllowed){
+    public double getItemPrice(String type){
+        for(RecyclableItem item : itemsAllowed){
             if(item.getType() == type){
                 return item.getCost();
             }
         }
-        return 0;
+        return -1;
     }
 
+    /**
+     * @return the list of items allowed
+     */
     public ArrayList<RecyclableItem> getItemsAllowed(){
         return itemsAllowed;
     }
@@ -216,7 +214,7 @@ public class RCM extends JPanel implements ActionListener{
     }
 
     public double getTotalTransactions(){
-        return totalTransactions;
+        return itemsRecycled.size();
     }
 
     /**
@@ -232,8 +230,8 @@ public class RCM extends JPanel implements ActionListener{
      *
      * @return the value of the item
      */
-    public double getValueOfItem(final RecycledItem item){
-        final int index = checkType(item.getType());
+    public double getValueOfItem(RecycledItem item){
+        int index = checkType(item.getType());
         if(index == -1){ // throw error here
             return -1;
         }
@@ -253,7 +251,7 @@ public class RCM extends JPanel implements ActionListener{
         // RCM TITLE
         panelTitle = new JPanel();
         titleLabel = new JLabel("RCM: " + getId());
-        final Font rcmFont = new Font("Georgia", Font.BOLD, 20);
+        Font rcmFont = new Font("Georgia", Font.BOLD, 20);
         titleLabel.setFont(rcmFont);
         panelTitle.add(titleLabel);
 
@@ -266,10 +264,10 @@ public class RCM extends JPanel implements ActionListener{
 
         panelTitle.add(panelInfo);
 
-        final JPanel itemData = new JPanel();
+        JPanel itemData = new JPanel();
         // JLabel historyTitle = new JLabel("Transactions: ");
         item_D = new JTextArea(5, 45);
-        final JScrollPane scrollPane = new JScrollPane(item_D);
+        JScrollPane scrollPane = new JScrollPane(item_D);
         scrollPane.setVerticalScrollBarPolicy(
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         item_D.setEditable(false);
@@ -285,9 +283,9 @@ public class RCM extends JPanel implements ActionListener{
         addButton.addActionListener(this);
 
         // Text Area
-        final JPanel panelHistory = new JPanel();
+        JPanel panelHistory = new JPanel();
         history = new JTextArea(5, 45);
-        final JScrollPane scrollPane1 = new JScrollPane(history);
+        JScrollPane scrollPane1 = new JScrollPane(history);
         scrollPane1.setVerticalScrollBarPolicy(
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         history.setEditable(false);
@@ -305,11 +303,9 @@ public class RCM extends JPanel implements ActionListener{
      * created and then are added to the list.
      */
     public void initRecyclableItems(){
-        itemsAllowed = new ArrayList<RecyclableItem>();
         itemsAllowed.add(new RecyclableItem("plastic", 1.2));
         itemsAllowed.add(new RecyclableItem("aluminium", 2.2));
         itemsAllowed.add(new RecyclableItem("glass", 1.8));
-
     }
 
     /**
@@ -323,18 +319,13 @@ public class RCM extends JPanel implements ActionListener{
      *
      * @param recyclableItems
      */
-    public void recycleItem(final RecycledItem... recyclableItems){
-        for(final RecycledItem i : recyclableItems){
-            final double value = getValueOfItem(i);
-            // Checks if there is enough funds in the machine before adding the
-            // item
+    public void recycleItem(RecycledItem... recyclableItems){
+        for(RecycledItem i : recyclableItems){
+            double value = getValueOfItem(i);
             if(totalMoney > value){
                 totalMoney = totalMoney - value;
                 itemsRecycled.add(i);
                 totalWeight += i.getWeight();
-                totalTransactions++;
-            }else{
-                // TO DO ; giveCoupon();
             }
         }
     }
@@ -346,8 +337,8 @@ public class RCM extends JPanel implements ActionListener{
      * @param type the type to be deleted.
      * @return whether or not the item has been deleted from the arraylist.
      */
-    public boolean removeAllowedItem(final String type){
-        for(final RecyclableItem i : itemsAllowed){
+    public boolean removeAllowedItem(String type){
+        for(RecyclableItem i : itemsAllowed){
             if(i.getType() == type){
                 itemsAllowed.remove(i);
                 return true;
@@ -366,77 +357,20 @@ public class RCM extends JPanel implements ActionListener{
     public void setCB(){
         rcmValues.removeAllItems();
         item_D.setText("");
-        final Font f = new Font("Andale Mono 14", Font.CENTER_BASELINE, 12);
+        Font f = new Font("Andale Mono 14", Font.CENTER_BASELINE, 12);
         item_D.setFont(f);
 
-        for(final RecyclableItem item : itemsAllowed){
+        for(RecyclableItem item : itemsAllowed){
             rcmValues.addItem(item.getType());
-            item_D.append(String.format(item.getType() + " ----------> " + item
-                    .getCost() + " $/lb" + "\r\n"));
+            item_D.append(String.format(item.getType() + "\t\t$" + item
+                    .getCost() + "/lb" + "\r\n"));
         }
-    }
-
-    /**
-     * @param id the id to be set
-     */
-    public void setId(final String id){
-        this.id = id;
-    }
-
-    public void setItemData(){
-        item_D.removeAll();
-        final Font f = new Font("Andale Mono 14", Font.CENTER_BASELINE, 12);
-        item_D.setFont(f);
-
-        for(final RecyclableItem _ri : itemsAllowed){
-            item_D.setText(String.format(_ri.getType() + " ----------> " + _ri
-                    .getCost() + " $/lb" + "\r\n"));
-        }
-    }
-
-    /**
-     * Sets the new item's price with the given parameters
-     *
-     * @param type the type of item to be set
-     * @param cost the new cost of the item
-     */
-    public void setItemPrice(final String type, final double cost){
-        for(final RecyclableItem item : itemsAllowed){
-            if(item.getType() == type){
-                item.setCost(cost);
-            }
-        }
-    }
-
-    /**
-     * @param items the ArrayList of recycled items to be set
-     */
-    public void setItemsRecycled(final ArrayList<RecycledItem> items){
-        itemsRecycled = items;
-    }
-
-    /**
-     * @param loc the location to be set
-     */
-    public void setLoc(final String loc){
-        this.loc = loc;
-    }
-
-    /**
-     * @param totalMoney the total amount of money to be set
-     */
-    public void setTotalMoney(final double totalMoney){
-        this.totalMoney = totalMoney;
-    }
-
-    public void setTotalTransactions(){
-        totalTransactions = 0;
     }
 
     /**
      * @param totalWeight the total weight to be set
      */
-    public void setTotalWeight(final double totalWeight){
+    public void setTotalWeight(double totalWeight){
         this.totalWeight = totalWeight;
     }
 
@@ -446,12 +380,12 @@ public class RCM extends JPanel implements ActionListener{
      * @param type the type to be updated
      * @param cost the cost to be updated
      */
-    public void updateAllowedItem(final String type, final double cost){
-        final RecyclableItem recyclableItem = new RecyclableItem(type, cost);
+    public void updateAllowedItem(String type, double cost){
+        RecyclableItem recyclableItem = new RecyclableItem(type, cost);
         if(!itemsAllowed.contains(recyclableItem)){
             addAllowedItem(recyclableItem);
         }else{
-            for(final RecyclableItem item : itemsAllowed){
+            for(RecyclableItem item : itemsAllowed){
                 if(item.getType() == recyclableItem.getType()){
                     item.setCost(recyclableItem.getCost());
                 }

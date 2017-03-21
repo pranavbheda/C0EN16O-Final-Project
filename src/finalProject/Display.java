@@ -23,7 +23,7 @@ public class Display extends JFrame implements ActionListener{
     private final RCM rcm1, rcm2;
     private final RMOS rmos;
 
-    public Display(final String titleText){
+    public Display(String titleText){
         super(titleText);
 
         rmos = new RMOS();
@@ -36,10 +36,10 @@ public class Display extends JFrame implements ActionListener{
         rmos.addRCM(rcm1);
         rmos.addRCM(rcm2);
 
-        final JPanel rmosPanel = new JPanel();
+        JPanel rmosPanel = new JPanel();
         rmosPanel.add(rmos);
 
-        final JPanel rcmPanel = new JPanel();
+        JPanel rcmPanel = new JPanel();
         rcmPanel.setLayout(new GridLayout(1, 2));
         rcmPanel.add(rcm1);
         rcmPanel.add(rcm2);
@@ -53,6 +53,6 @@ public class Display extends JFrame implements ActionListener{
     }
 
     @Override
-    public void actionPerformed(final ActionEvent e){
+    public void actionPerformed(ActionEvent e){
     }
 }
