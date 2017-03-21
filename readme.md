@@ -1,4 +1,6 @@
-Final Project for COEN 160 
+Pranav Bheda and Gurneev Sareen
+COEN 160 Object Oriented Programming and Analysis
+Final Project
 
 Description: EcoRe is a company that wants to promote and market products for recycling of material.
 The company wants to design and manufacture, an EcoRecycle system, consisting of recycling machines and recycling stations which monitor the recycling machines.
